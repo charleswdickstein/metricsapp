@@ -22,4 +22,4 @@ def home(request):
 	module_dir = os.path.dirname(__file__)  # get current directory
 	file_path = os.path.join(module_dir, 'data.txt')
 	datastore = process_data(file_path)
-	return HttpResponse(datastore["counter"])
+	return HttpResponse("Write Successful")
