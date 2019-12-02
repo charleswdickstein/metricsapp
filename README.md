@@ -18,13 +18,16 @@ JSON File should be in this format:
 
 ## Demo Instructions
 ### Run the following commands from the mysite directory in terminal to build DB:
-$ python manage.py migrate
-$ python manage.py makemigrations polls
+#### $ python manage.py migrate
+#### $ python manage.py makemigrations polls
 
 ### Run command to start server. Then go to localhost:8000
-$ python manage.py runserver
+#### $ python manage.py runserver
 
 
 ## TODO:
 ### Counter application to create Dictionary and exposed JSON file which the scraper will read. 
 ### Read Data from SQLite DB for data visualization
+
+### Resources:
+### https://docs.djangoproject.com/en/2.2/intro/
