@@ -19,7 +19,7 @@ JSON File should be in this format:
 ## Demo Instructions
 ### Run the following commands from the mysite directory in terminal to build DB:
 #### $ python manage.py migrate
-#### $ python manage.py makemigrations polls
+#### $ python manage.py makemigrations visualizer
 
 ### Run command to start server. Then go to localhost:8000
 #### $ python manage.py runserver
