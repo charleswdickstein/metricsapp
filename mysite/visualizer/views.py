@@ -31,5 +31,8 @@ def home(request):
 	df = pd.DataFrame(list(Counter.objects.all().values()))
 	df = pd.DataFrame(list(Counter.objects.all().values('key', 'value', 'pub_date')))
 	print(df.head())
-	
+	print("Print Sums By key")
+	print(df.groupby("key").sum())
+	print("Print Sums By key And Date")
+	print(df.groupby(["key", "pub_date"]).sum())
 	return HttpResponse("Write Successful")
