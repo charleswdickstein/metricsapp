@@ -1,9 +1,20 @@
+<style type="text/css">
+	img{
+		width: 500px;
+		margin: 0 auto;
+	}
+</style>
+
 {% if latest_question_list %}
     <ul>
     {% for question in latest_question_list %}
-        <li><a href="/index/{{ question }}/">{{ question.key }}</a></li>
+        <li><a href="../graphs/{{ question }}">{{ question }}</a></li>
+
+        <img src="/static/{{question}}">
+
     {% endfor %}
     </ul>
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
+{% load static %}

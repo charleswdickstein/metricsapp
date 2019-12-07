@@ -78,6 +78,7 @@ def home(request):
 	lst = []
 	#df["pub_date"] = df["pub_date"].apply(lambda x: convert_to_seconds)
 	df["server"] = 1 
+
 	for k in df.key.unique():
 		plt.figure(graphNum)
 		graphNum = graphNum+1
@@ -95,9 +96,12 @@ def home(request):
 		plt.xlabel("Time")
 		plt.ylabel("Counts")
 		plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-		plt.savefig("scrap" + str(graphNum)+".png")
+		plt.savefig("static/scrap" + str(graphNum)+".png")
+		lst.append(plt)
 		plt.close()
 	#print()
+	print("this is ist ")
+	print(lst)
 	canvas = FigureCanvas(fig)
 	response = HttpResponse(content_type='image/png')
 	canvas.print_png(response)
@@ -112,4 +116,10 @@ from django.shortcuts import render
 def tests(request):
 	latest_question_list = Counter.objects.order_by('pub_date')[:5]
 	context = {'latest_question_list': latest_question_list}
+	path="static"  # insert the path to your directory   
+	img_list =os.listdir(path)
+	print(img_list)
+	context = {'latest_question_list': img_list}
+
+
 	return render(request, 'visualizer/test.html', context)
