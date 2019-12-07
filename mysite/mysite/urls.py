@@ -19,4 +19,5 @@ from visualizer import views
 urlpatterns = [
 	url(r'^$', views.home, name='home'),
     url(r'^admin/', admin.site.urls),
+	url(r'^tests/', views.tests, name='test'),
 ]
