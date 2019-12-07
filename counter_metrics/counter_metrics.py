@@ -45,7 +45,7 @@ class MetricsMap:
         return self.metrics
 
     def getMetricValue(self, key):
-        # returns array of metric items
+        # returns value of metric
         return self.metrics[key]
 
     def getMetricsMapJSONified(self):
@@ -66,6 +66,11 @@ class MetricsMap:
 # Debugging
 def debug():
     print('abcdefg##############\n\n\n')
+    my_map = MetricsMap('1')
+    my_map.simpleIncrement('key1')
+    my_map.createSimpleCounter('key2')
+    my_map.simpleIncrement('key1', 33)
+    print(my_map.getMetricsMapJSONified())
 
 if __name__ == '__main__':
     debug()
