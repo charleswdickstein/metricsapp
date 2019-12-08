@@ -19,7 +19,10 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 from matplotlib.figure import Figure
 import seaborn as sns
 from django.template import loader
+import numpy as np
 
+
+from django.shortcuts import render
 
 def convert_to_seconds(x):
 	d = datetime.strptime(x, "%d/%m/%Y %H:%M:%S")
@@ -39,6 +42,100 @@ def process_data(file_path):
 	
 	return datastore
 
+def get_graphs(testData):
+	keys = "key" #Holds the string names of the keys
+	serv = "server" #Holds the string names of the server location
+	vlaues = "value" #Holds the values of the counts
+	time = "pub_date" #Holds the time stamps
+
+	showPlot = True #Runs the plt.show() command if this is True (should be set false)
+	graphNum = 0
+	print("50")
+	for k in testData.key.unique():
+		plt.figure(graphNum)
+		graphNum = graphNum+1
+	    
+	    #Gets the aggragate values for all servers per key
+		aggra = np.zeros(len(testData[(testData[keys] == k) 
+	                & (testData[serv] == testData.server.unique()[0])][vlaues].values))
+	    #Get the change in values for the aggragate
+		change = np.zeros(len(aggra))
+	    #An array to hold the change in values (serperate per server)
+		changeLocArr = []
+	    #Get the time stamp to use for the x axis
+		timeAxis = testData[(testData[keys] == k) & (testData[serv] == testData.server.unique()[0])][time]
+		print('64')
+		for L in testData.server.unique():
+			section = testData[(testData[keys] == k) & (testData[serv] == L)]
+			#Add plot line to seperated values
+			plt.plot(timeAxis, section[vlaues], label=L)
+			#Update the aggragate change in values and change in values (the temp arr)
+			a = section[vlaues].values
+			change[0] = change[0] + a[0]
+			changeTemp = np.zeros(len(a))
+			changeTemp[0] = a[0]
+			for i in range(1, len(change)):
+			    change[i] = change[i] + (a[i] - a[i-1])
+			    changeTemp[i] = a[i] - a[i-1]
+			changeLocArr.append(changeTemp)
+			#Get the aggragate values
+			aggra = aggra + a
+			plt.close()
+	    
+		print("82")
+	    #Plot the seperated values
+		plt.title("key: " + k)
+		plt.xlabel("Time")
+		plt.ylabel("Counts")
+		plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+		plt.savefig("static/scrap" + str(graphNum) + ".png")
+		# if(showPlot == True):
+		#     plt.show()
+		# plt.close()
+		print("91")
+		#Plot the aggragate
+		plt.figure(graphNum)
+		graphNum = graphNum+1
+		print("95")
+		plt.plot(timeAxis, aggra)
+		plt.title("key: " + k + " aggregate")
+		plt.xlabel("Time")
+		plt.ylabel("Counts")
+		plt.savefig("static/scrapAgg" + str(graphNum) + ".png")
+		
+		plt.close()
+		print("104")
+		#Plot the change in values
+		plt.figure(graphNum)
+		graphNum = graphNum+1
+
+		L = testData.server.unique()
+
+		for i in range(0, len(changeLocArr)):
+		    plt.plot(timeAxis, changeLocArr[i], label=L[i])
+		print("113")
+		plt.title("Change in key: " + k)
+		plt.xlabel("Time")
+		plt.ylabel("Counts")
+		plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+		plt.savefig("static/ascrapChange" + str(graphNum) + ".png")
+		
+		plt.close()
+		print("122")
+		#Plot the aggragate change in values
+		plt.figure(graphNum)
+		graphNum = graphNum+1
+
+		plt.plot(timeAxis, change)
+		plt.title("Change in key: " + k + " aggregate")
+		plt.xlabel("Time")
+		plt.ylabel("Counts")
+		plt.savefig("mysite/static/scrapAggChange" + str(graphNum) + ".png")
+		
+		plt.close()
+	plt.close()
+		
+
 def home(request):
 	x = 1
 	
@@ -57,69 +154,39 @@ def home(request):
 	print("Print Sums By key And Date")
 	print(df.groupby(["key", "pub_date"]).sum())
 	fig=Figure()
-	# ax=fig.add_subplot(111)
-	# x=[]
-	# y=[]
-	# now=datetime.datetime.now()
-	# delta=datetime.timedelta(days=1)
-	# for i in range(10):
-	#     x.append(now)
-	#     now+=delta
-	#     y.append(random.randint(0, 1000))
-	# ax.plot_date(x, y, '-')
-	
-	# fig.autofmt_xdate()
 
 	fig, ax = plt.subplots(figsize=(15,7))
 	
-	#df.groupby(['key','pub_date']).sum()['value'].plot(ax=ax)
-	#ax = sns.lineplot(x="key", y="value", hue="pub_date", data=df)
+	
 	graphNum = 0
 	lst = []
-	#df["pub_date"] = df["pub_date"].apply(lambda x: convert_to_seconds)
 	df["server"] = 1 
-
-	for k in df.key.unique():
-		plt.figure(graphNum)
-		graphNum = graphNum+1
-		for L in df.server.unique():
-			#num = "21"+str(graphNum)
-			#fig.add_subplot(5, 4,graphNum +1)
-			section = df[(df["key"] == k) & (df["server"] == L)]
-			plt.plot(section["pub_date"], section["value"], label=L)
-			print("val")
-			print(section["key"], section["value"])
-		    #lst.append(plt)
-
-
-		plt.title("key: " + k)
-		plt.xlabel("Time")
-		plt.ylabel("Counts")
-		plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-		plt.savefig("static/scrap" + str(graphNum)+".png")
-		lst.append(plt)
-		plt.close()
-	#print()
 	print("this is ist ")
-	print(lst)
+	print()
+	get_graphs(df)
+	print("after get")
 	canvas = FigureCanvas(fig)
 	response = HttpResponse(content_type='image/png')
 	canvas.print_png(response)
-	return response
+	path = "static"  # insert the path to your directory   
+	img_list =os.listdir(path)
+	print("img list")
+	print(img_list)
+	context = {'latest_question_list': img_list}
+	print(request)
+	plt.close()
+	return render(request, 'visualizer/test.html', context)
+	
 
 
-
-from django.shortcuts import render
 
 
 
 def tests(request):
 	latest_question_list = Counter.objects.order_by('pub_date')[:5]
-	context = {'latest_question_list': latest_question_list}
+	#context = {'latest_question_list': latest_question_list}
 	path="static"  # insert the path to your directory   
 	img_list =os.listdir(path)
-	print(img_list)
+	# print(img_list)
 	context = {'latest_question_list': img_list}
-
-
 	return render(request, 'visualizer/test.html', context)
