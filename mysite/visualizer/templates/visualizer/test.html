@@ -1,16 +1,25 @@
 <style type="text/css">
+    h1{
+
+        text-align: center;
+        width: 100%;
+        font-size:10em;
+    }
 	img{
-		width: 500px;
+        display: block;
+		width: 50%;
 		margin: 0 auto;
+        margin-left:auto;
+        margin-right:auto;
 	}
 </style>
-
-{% if latest_question_list %}
+<h1>Metriculous</h1>
+{% if graphs %}
     <ul>
-    {% for question in latest_question_list %}
+    {% for graph in graphs %}
         <li><a href="../graphs/{{ question }}">{{ question }}</a></li>
 
-        <img src="/static/{{question}}">
+        <img src="/static/{{graph}}">
 
     {% endfor %}
     </ul>
