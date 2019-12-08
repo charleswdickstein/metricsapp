@@ -4,6 +4,7 @@ class Counter(models.Model):
     key = models.CharField(max_length=200)
     value = models.IntegerField(default=0)
     pub_date = models.DateTimeField('date published')
+    server = models.CharField(max_length=200, default="Server Unknown")
     #url = models.CharField(max_length=200, default="none")
     def __str__(self):
         return self.key

@@ -29,7 +29,7 @@ def convert_to_seconds(x):
  	d =  time.mktime(d.timetuple())
  	print("this is d")
 
-def process_url(f):
+def process_url(f, link):
 	t = timezone.now()
 	
 	datastore = json.loads(f)
@@ -38,7 +38,7 @@ def process_url(f):
 	#counter = datastore["counter"]
 	for key, value in counter.iteritems():
 		print(key, value)
-		counter = Counter(key=str(key), value=int(value), pub_date=t)
+		counter = Counter(key=str(key), value=int(value), pub_date=t, server=link)
 		counter.save()
 	
 	return datastore
@@ -269,13 +269,17 @@ def get_graphs_url(testData):
 	#testData = get_test_data()
 	#Values to get plots with an x limit (last few time intervals)
 	xlimPlot = True
-	plotLim = 30 #The number of the last few time peices to graph
-	xlim = plotLim #The number of the last few time peices to graph
-
+	xlim = 30 #The number of the last few time peices to graph
+	print("this is test")
+	print(testData)
 	showPlot = True #Runs the plt.show() command if this is True (should be set false)
 	testData.sort_values("pub_date", inplace=True)
 	graphNum = 0
 	print(59)
+	print(testData)
+	print("server")
+	print(testData["server"])
+	testData = testData.dropna()
 	for k in testData.key.unique():
 	    #Gets the aggragate values for all servers per key
 	    aggra = np.zeros(len(testData[(testData[keys] == k) 
@@ -289,17 +293,26 @@ def get_graphs_url(testData):
 	    #Get the time stamp to use for the x axis
 	    timeAxis = testData[(testData[keys] == k) & (testData[serv] == testData.server.unique()[0])][time]
 	    timeAxisLen = len(timeAxis)
-	    if(timeAxisLen < plotLim):
-	    	xlim = timeAxisLen
-	    else:
-			xlim = plotLim
 	    print(73)
+	    print(testData["server"])
 	    for L in testData.server.unique():
 	        section = testData[(testData[keys] == k) & (testData[serv] == L)]
+	        if section.empty:
+	        	continue
+	        #print("section ")
+	        #print(testData[""])
+	        #print(section)
+
 	        #Add plot line to seperated values
 	        locArr.append(section[vlaues])
 	        #Update the aggragate change in values and change in values (the temp arr)
 	        a = section[vlaues].values
+	        print("here")
+	        print("section")
+	        # if len(change) == 0 or len(a) == 0:
+	        # 	break;
+	        print(section)
+
 	        change[0] = change[0] + a[0]
 	        changeTemp = np.zeros(len(a))
 	        changeTemp[0] = a[0]
@@ -311,14 +324,14 @@ def get_graphs_url(testData):
 	        aggra = aggra + a
 	    
 	    L = testData.server.unique()
-	    print(91)
+	    print(322)
 	    #Plot the seperated values
 	    plt.figure(graphNum)
 	    graphNum = graphNum+1
-	    
+	    print(326)
 	    for i in range(0, len(locArr)):
 	        plt.plot(timeAxis, locArr[i], label=L[i])
-
+	        #plt.close()
 	    print(98)
 	    plt.title("Counts for " + str(k) + " per Server")
 	    plt.xlabel("Time")
@@ -331,7 +344,7 @@ def get_graphs_url(testData):
 	    #     plt.show()
 	    plt.close()
 	    print(108)
-	    if(xlimPlot == True):
+	    if(xlimPlot == True and xlim < timeAxisLen):
 	        plt.figure(graphNum)
 	        graphNum = graphNum+1
 	        minY = np.inf
@@ -348,9 +361,7 @@ def get_graphs_url(testData):
 	        plt.xticks(rotation=45)
 	        plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 	        plt.ylim((minY * 0.998), (maxY * 1.002))
-
-	        if(xlim > 1):
-				plt.xlim(timeAxis.values[timeAxisLen-1 - xlim],timeAxis.values[timeAxisLen-1])
+	        plt.xlim(timeAxis.values[timeAxisLen-1 - xlim],timeAxis.values[timeAxisLen-1])
 	        plt.savefig("static/"+str(k)+"aCountsPerServerLimKey_" + str(k) + ".png", bbox_inches='tight')
 	        # if(showPlot == True):
 	        #     plt.show()
@@ -371,7 +382,7 @@ def get_graphs_url(testData):
 	    #     plt.show()
 	    plt.close()
 	    print(146)
-	    if(xlimPlot == True):
+	    if(xlimPlot == True and xlim < timeAxisLen):
 	        plt.figure(graphNum)
 	        graphNum = graphNum+1
 	        
@@ -382,9 +393,7 @@ def get_graphs_url(testData):
 	        plt.ylabel("Count")
 	        plt.xticks(rotation=45)
 	        plt.ylim((min(aggra[timeAxisLen-1-xlim:]) * 0.998), (max(aggra[timeAxisLen-1-xlim:]) * 1.002))
-	        if(xlim > 1):
-				plt.xlim(timeAxis.values[timeAxisLen-1 - xlim],timeAxis.values[timeAxisLen-1])
-
+	        plt.xlim(timeAxis.values[timeAxisLen-1 - xlim],timeAxis.values[timeAxisLen-1])
 	        plt.savefig("static/"+ str(k) +"bAggCountsLimKey_" + str(k) + ".png", bbox_inches='tight')
 	        # if(showPlot == True):
 	        #     plt.show()
@@ -407,7 +416,7 @@ def get_graphs_url(testData):
 	    #     plt.show()
 	    plt.close()
 	    print(180)
-	    if(xlimPlot == True):
+	    if(xlimPlot == True and xlim < timeAxisLen):
 	        plt.figure(graphNum)
 	        graphNum = graphNum+1
 	        minY = np.inf
@@ -424,9 +433,7 @@ def get_graphs_url(testData):
 	        plt.xticks(rotation=45)
 	        plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 	        plt.ylim((minY * 0.995), (maxY * 1.005))
-	        if(xlim > 1):
-				plt.xlim(timeAxis.values[timeAxisLen-1 - xlim],timeAxis.values[timeAxisLen-1])
-
+	        plt.xlim(timeAxis.values[timeAxisLen-1 - xlim],timeAxis.values[timeAxisLen-1])
 	        plt.savefig("static/"+ str(k) +"aChangeCountPerServerLimKey_" + str(k) + ".png", bbox_inches='tight')
 	        # if(showPlot == True):
 	        #     plt.show()
@@ -447,22 +454,21 @@ def get_graphs_url(testData):
 	    #     plt.show()
 	    plt.close()
 	    
-	    if(xlimPlot == True):
-			plt.figure(graphNum)
-			graphNum = graphNum+1
-			plt.plot(timeAxis, change)
-			plt.title("Aggregate of the Change in Counts for " + str(k)
-			         + "\nOver All Servers Over Last " + str(xlim) + " Time Intervals")
-			plt.xlabel("Time")
-			plt.ylabel("Counts")
-			plt.xticks(rotation=45)
-			plt.ylim((0.995 * min(change[timeAxisLen-1-xlim:])), (1.005 * max(change[timeAxisLen-1-xlim:])))
-			if (xlim > 1):
-				plt.xlim(timeAxis.values[timeAxisLen-1 - xlim],timeAxis.values[timeAxisLen-1])
-			plt.savefig("static/"+ str(k) +"bAggChangeCountLimKey_" + str(k) + ".png", bbox_inches='tight')
+	    if(xlimPlot == True and xlim < timeAxisLen):
+	        plt.figure(graphNum)
+	        graphNum = graphNum+1
+	        plt.plot(timeAxis, change)
+	        plt.title("Aggregate of the Change in Counts for " + str(k)
+	                 + "\nOver All Servers Over Last " + str(xlim) + " Time Intervals")
+	        plt.xlabel("Time")
+	        plt.ylabel("Counts")
+	        plt.xticks(rotation=45)
+	        plt.ylim((0.995 * min(change[timeAxisLen-1-xlim:])), (1.005 * max(change[timeAxisLen-1-xlim:])))
+	        plt.xlim(timeAxis.values[timeAxisLen-1 - xlim],timeAxis.values[timeAxisLen-1])
+	        plt.savefig("static/"+ str(k) +"bAggChangeCountLimKey_" + str(k) + ".png", bbox_inches='tight')
 	        # if(showPlot == True):
 	        #     plt.show()
-			plt.close()
+	        plt.close()
 
 def get_graphs(testData):
 	keys = "key" #Holds the string names of the keys
@@ -557,6 +563,13 @@ def get_graphs(testData):
 	plt.close()
 		
 import urllib
+
+
+def url_to_text(link):
+	f = urllib.urlopen(link)
+	myfile = f.read()
+	return myfile
+
 def home(request):
 
 	module_dir = os.path.dirname(__file__)  # get current directory
@@ -566,28 +579,30 @@ def home(request):
 	print("read url")
 
 	link = "http://34.74.172.24:8000/micro/stats"
-	f = urllib.urlopen(link)
-	myfile = f.read()
-	print(myfile)
-	datastore = process_url(myfile)
+	myfile = url_to_text(link)
+	datastore = process_url(myfile, link)
+
+	link = "http://35.236.232.196:8000/micro/stats"
+	myfile = url_to_text(link)
+	datastore = process_url(myfile, link)
 
 
 	
 	df = pd.DataFrame(list(Counter.objects.all().values()))
-	df = pd.DataFrame(list(Counter.objects.all().values('key', 'value', 'pub_date')))
+	df = pd.DataFrame(list(Counter.objects.all().values('key', 'value', 'pub_date', 'server')))
 	fig=Figure()
 	fig, ax = plt.subplots(figsize=(15,7))
-	df["server"] = 1 # for testing only
+	#df["server"] = 1 # for testing only
 	#get_graphs(df)
 	#get_graphs_2(df)
+	print(581)
+	print(df)
 	get_graphs_url(df)
 	path = "static"  # insert the path to your directory   
 	img_list =os.listdir(path)
 	img_list = sorted(img_list)
-	print("img list")
-	print(img_list)
-	if '.DS_Store' in img_list:
-		img_list.remove('.DS_Store')
+	if ".DS_Store" in img_list:
+		img_list.remove(".DS_Store")
 	context = {'graphs': img_list}
 	
 
