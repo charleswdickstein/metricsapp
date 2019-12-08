@@ -17,6 +17,7 @@ def pageHit(key):
 #################
 def index(request):
   pageHit('page-index')
+  metrics_map.simpleIncrement('total-views')
   if request.user.is_authenticated():
     return home(request)
   else:
@@ -33,6 +34,7 @@ def anon_home(request):
 def stream(request, user_id):  
   # See if to present a 'follow' button
   pageHit('page-stream')
+  metrics_map.simpleIncrement('total-views')
   form = None
   if request.user.is_authenticated() and request.user.id != int(user_id):
     try:
@@ -61,6 +63,7 @@ def stream(request, user_id):
 
 def register(request):
   pageHit('page-register')
+  metrics_map.simpleIncrement('total-views')
   if request.method == 'POST':
     form = MyUserCreationForm(request.POST)
     new_user = form.save(commit=True)
@@ -68,6 +71,7 @@ def register(request):
     user = authenticate(username=new_user.username,
                         password=form.clean_password2())
     if user is not None:
+      metrics_map.simpleIncrement('user-created')
       login(request, user)
     else:
       raise Exception
@@ -81,6 +85,7 @@ def register(request):
 @login_required
 def home(request):
   pageHit('page-home')
+  metrics_map.simpleIncrement('total-views')
   '''List of recent posts by people I follow'''
   try:
     my_post = Post.objects.filter(user=request.user).order_by('-pub_date')[0]
@@ -101,12 +106,14 @@ def home(request):
 @login_required
 def post(request):
   pageHit('page-post')
+  metrics_map.simpleIncrement('total-views')
   if request.method == 'POST':
     form = PostForm(request.POST)
     new_post = form.save(commit=False)
     new_post.user = request.user
     new_post.pub_date = timezone.now()
     new_post.save()
+    metrics_map.simpleIncrement('posts')
     return home(request)
   else:
     form = PostForm
@@ -115,6 +122,7 @@ def post(request):
 @login_required
 def follow(request):
   pageHit('page-follow')
+  metrics_map.simpleIncrement('total-views')
   if request.method == 'POST':
     form = FollowingForm(request.POST)
     new_follow = form.save(commit=False)
