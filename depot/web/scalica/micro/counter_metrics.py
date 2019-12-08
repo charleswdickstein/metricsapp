@@ -3,7 +3,7 @@
 
 '''
 to import this file and serve a json response:
-from this_module import MetricsMap
+from this_module import MetricsMap(id)
 x = MetricsMap(id)
 # add to dict here... 
 res = x.serveMetricsMap()
