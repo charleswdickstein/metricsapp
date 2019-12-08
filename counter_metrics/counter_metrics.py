@@ -3,7 +3,8 @@
 
 '''
 to import this file and serve a json response:
-from this_module import MetricsMap
+from (.counter_metrics) import MetricsMap(id)
+    # Or whatever path the module is
 x = MetricsMap(id)
 # add to dict here... 
 res = x.serveMetricsMap()
@@ -11,9 +12,9 @@ res = x.serveMetricsMap()
 return res
 '''
 
-import datetime
+# import datetime
 import json
-from django.http import HttpResponse
+# from django.http import HttpResponse
 from django.http import JsonResponse
 
 class MetricsMap:

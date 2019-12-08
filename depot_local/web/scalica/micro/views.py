@@ -8,11 +8,15 @@ from django.utils import timezone
 from .counter_metrics import MetricsMap
 from .models import Following, Post, FollowingForm, PostForm, MyUserCreationForm
 
-metrics_map = MetricsMap(1)
+metrics_map = MetricsMap()
+
+def pageHit(key):
+    metrics_map.simpleIncrement(key)
 
 # Anonymous views
 #################
 def index(request):
+  pageHit('page-index')
   if request.user.is_authenticated():
     return home(request)
   else:
@@ -28,6 +32,7 @@ def anon_home(request):
 
 def stream(request, user_id):  
   # See if to present a 'follow' button
+  pageHit('page-stream')
   form = None
   if request.user.is_authenticated() and request.user.id != int(user_id):
     try:
@@ -55,6 +60,7 @@ def stream(request, user_id):
   return render(request, 'micro/stream.html', context)
 
 def register(request):
+  pageHit('page-register')
   if request.method == 'POST':
     form = MyUserCreationForm(request.POST)
     new_user = form.save(commit=True)
@@ -74,6 +80,7 @@ def register(request):
 #####################
 @login_required
 def home(request):
+  pageHit('page-home')
   '''List of recent posts by people I follow'''
   try:
     my_post = Post.objects.filter(user=request.user).order_by('-pub_date')[0]
@@ -93,6 +100,7 @@ def home(request):
 # Allows to post something and shows my most recent posts.
 @login_required
 def post(request):
+  pageHit('page-post')
   if request.method == 'POST':
     form = PostForm(request.POST)
     new_post = form.save(commit=False)
@@ -106,6 +114,7 @@ def post(request):
 
 @login_required
 def follow(request):
+  pageHit('page-follow')
   if request.method == 'POST':
     form = FollowingForm(request.POST)
     new_follow = form.save(commit=False)

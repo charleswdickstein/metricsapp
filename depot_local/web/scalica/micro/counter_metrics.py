@@ -3,23 +3,22 @@
 
 '''
 to import this file and serve a json response:
-from this_module import MetricsMap(id)
-x = MetricsMap(id)
+from this_module import MetricsMap()
+x = MetricsMap()
 # add to dict here... 
 res = x.serveMetricsMap()
 # res is an entire http response
 return res
 '''
 
-import datetime
+# import datetime
 import json
-from django.http import HttpResponse
+# from django.http import HttpResponse
 from django.http import JsonResponse
 
 class MetricsMap:
-    def __init__(self, id):
+    def __init__(self):
         # Metrics dictionary has key: metric and value: list of (x), where x can be anything (we are thinking a tuple of (timestamp, count))
-        self.id = id
         self.metrics = {}
 
     def createSimpleCounter(self, key, initial_count=1):
@@ -50,27 +49,16 @@ class MetricsMap:
 
     def getMetricsMapJSONified(self):
         # Returns metrics dict as a JSON string. 
-        # TODO: Do we want server ID in the json object?
-        temp_metrics_dict_with_id = self.metrics.copy()
-        temp_metrics_dict_with_id['id'] = self.id 
-        json_str = json.dumps(temp_metrics_dict_with_id)
-        return json_str
+        ret = json.dumps(self.metrics)
+        return ret
 
     def serveMetricsMap(self):
         # Returns HTTP response with Json object as content
-        # TODO: Do we want server ID in the json object?
-        temp_metrics_dict_with_id = self.metrics.copy()
-        temp_metrics_dict_with_id['id'] = self.id 
-        return JsonResponse(temp_metrics_dict_with_id)
+        return JsonResponse(self.metrics)
 
 # Debugging
 def debug():
-    print('abcdefg##############\n\n\n')
-    my_map = MetricsMap('1')
-    my_map.simpleIncrement('key1')
-    my_map.createSimpleCounter('key2')
-    my_map.simpleIncrement('key1', 33)
-    print(my_map.getMetricsMapJSONified())
+    pass
 
 if __name__ == '__main__':
     debug()
