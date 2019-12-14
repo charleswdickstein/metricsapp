@@ -8,15 +8,15 @@ class Counter(models.Model):
     #url = models.CharField(max_length=200, default="none")
     def __str__(self):
         return self.key
-	
-	class Meta:
-		db_table = 'COUNTERS'
-	
-	def to_dict(self):
-		return {
-			'key': self.key,
-			'y': [self.value, self.pub_date]
-		}
+    
+    class Meta:
+        db_table = 'COUNTERS'
+    
+    def to_dict(self):
+        return {
+            'key': self.key,
+            'y': [self.value, self.pub_date]
+        }
 
 
 
