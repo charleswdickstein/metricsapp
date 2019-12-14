@@ -9,7 +9,7 @@ from .counter_metrics import MetricsMap
 from .models import Following, Post, FollowingForm, PostForm, MyUserCreationForm
 
 metrics_map = MetricsMap()
-metrics_map.createSimpleCounters(['total-views', 'page-home', 'user-created', 'posts', 'page-register', 'page-index', 'page-posts'])
+metrics_map.createSimpleCounters(['total-views', 'page-home', 'user-created', 'posts', 'page-register', 'page-index', 'page-post'])
 
 def pageHit(key):
     metrics_map.simpleIncrement(key)
