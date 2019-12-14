@@ -1,0 +1,6 @@
+Alter the numbers and links but DO NOT alter anything else in this file.
+Time Between Scrapes (integer in milliseconds): 30000
+Time Intervals Shown (integer number):30
+Server URLs (list bellow, one per line with no empty lines)
+http://thisisaurlfor1/stats
+http://thisisaurlfor2/stats

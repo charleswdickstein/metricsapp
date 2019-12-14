@@ -14,13 +14,38 @@
 	}
 </style>
 <script type="text/javascript">
+     
+
+document.addEventListener("DOMContentLoaded", function(event) { 
+  //do work
+    var getScrapeTime = parseInt(document.getElementById("scrapeTime").textContent, 10);
+    //alert(getScrapeTime);
+
+    
   setTimeout(function(){
+    var getScrapeTime = parseInt(document.getElementById("scrapeTime").textContent, 10);
+    if (getScrapeTime == null){
+        getScrapeTime = 60000;
+    }
+    console.log("scrape time " + getScrapeTime);
     location = 'localhost:8000'
     location.reload();
-  },15000)
+  },getScrapeTime)
+
+});
 </script>
 <h1>Metriculous</h1>
+
 {% if graphs %}
+<!-- {"scrapeTime": scrapeTime, "serverNum": serverNum, "servers": servers, "xlim":xlim}
+ -->
+<ul>
+    <li>Configuration Info</li>
+    <li>Servers: {{servers}}</li>
+    <li>Server Num: {{serverNum}}</li>
+    <li>Scrape Time <span id="scrapeTime">{{scrapeTime}}</span></li>
+    <li>MPlot Xlim: {{xlim}}</li>
+</ul>
     <ul>
     {% for graph in graphs %}
         <li><a href="../graphs/{{ question }}">{{ question }}</a></li>
