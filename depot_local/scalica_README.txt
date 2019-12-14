@@ -27,7 +27,17 @@ $ python manage.py migrate
 Run the server:
 $ source ./env/bin/activate
 $ cd web/scalica
-$ python manage.py runserver
+$ python manage.py runserver 0:8000 
+
+# To run the server forever using screen package:
+$ source ./env/bin/activate
+$ sudo apt-get install screen
+$ screen
+$ python manage.py runserver 0:8000
+# now exit from the screen
+PRESS ctrl+a d
+# We can return to the screen by:
+$ screen -r
 
 Access the site at http://localhost:8000/micro
 
