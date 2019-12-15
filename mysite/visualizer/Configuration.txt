@@ -1,5 +1,5 @@
 Alter the numbers and links but DO NOT alter anything else in this file.
-Time Between Scrapes (integer in milliseconds): 30000
+Time Between Scrapes (integer in milliseconds): 10
 Time Intervals Shown (integer number):30
 Server URLs (list bellow, one per line with no empty lines)
 http://35.237.169.40:8000/micro/stats

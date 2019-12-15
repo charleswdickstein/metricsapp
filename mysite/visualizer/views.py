@@ -20,10 +20,10 @@ from matplotlib.figure import Figure
 import seaborn as sns
 from django.template import loader
 import numpy as np
-#from django.utils import simplejson
-
-
+from apscheduler.schedulers.background import BackgroundScheduler
 from django.shortcuts import render
+import urllib
+
 
 def convert_to_seconds(x):
     d = datetime.strptime(x, "%d/%m/%Y %H:%M:%S")
@@ -36,8 +36,7 @@ def process_url(f, link):
     datastore = json.loads(f)
     print(datastore)
     counter = datastore
-    
-    #counter = datastore["counter"]
+   
     for key, value in counter.iteritems():
         print(key, value)
         counter = Counter(key=str(key), value=int(value), pub_date=t, server=link)
@@ -69,8 +68,7 @@ def get_test_data():
     print(testData)
     testData["key"] = testData["Key"] 
     testData["value"] = testData["Value"] 
-    testData["server"] = testData["Server"]
-    #testData["pu"] = testData["Server"]  
+    testData["server"] = testData["Server"] 
     return testData
 
 def get_graphs_2(testData):
@@ -301,31 +299,17 @@ def get_graphs_url(testData):
         timeAxis = testData[(testData[keys] == k) & (testData[serv] == testData.server.unique()[0])][time]
         timeAxisLen = len(timeAxis)
         print(73)
-        print(testData["server"])
+        #print(testData["server"])
         for L in testData.server.unique():
             section = testData[(testData[keys] == k) & (testData[serv] == L)]
             if section.empty:
                 continue
-            #print("section ")
-            #print(testData[""])
-            #print(section)
 
             #Add plot line to seperated values
             locArr.append(section[vlaues])
             #Update the aggragate change in values and change in values (the temp arr)
             a = section[vlaues].values
-            print("here")
-            print("section")
-            # if len(change) == 0 or len(a) == 0:
-            #   break;
-            print(section)
-            print("k")
-            print(L)
-            print(len(aggra))
             
-            # if len(aggra) == 0:
-            #     continue
-
             change[0] = change[0] + a[0]
             changeTemp = np.zeros(len(a))
             changeTemp[0] = a[0]
@@ -483,100 +467,6 @@ def get_graphs_url(testData):
             #     plt.show()
             plt.close()
 
-def get_graphs(testData):
-    keys = "key" #Holds the string names of the keys
-    serv = "server" #Holds the string names of the server location
-    vlaues = "value" #Holds the values of the counts
-    time = "pub_date" #Holds the time stamps
-
-    showPlot = True #Runs the plt.show() command if this is True (should be set false)
-    graphNum = 0
-    print("50")
-    for k in testData.key.unique():
-        plt.figure(graphNum)
-        graphNum = graphNum+1
-        
-        #Gets the aggragate values for all servers per key
-        aggra = np.zeros(len(testData[(testData[keys] == k) 
-                    & (testData[serv] == testData.server.unique()[0])][vlaues].values))
-        #Get the change in values for the aggragate
-        change = np.zeros(len(aggra))
-        #An array to hold the change in values (serperate per server)
-        changeLocArr = []
-        #Get the time stamp to use for the x axis
-        timeAxis = testData[(testData[keys] == k) & (testData[serv] == testData.server.unique()[0])][time]
-        print('64')
-        for L in testData.server.unique():
-            section = testData[(testData[keys] == k) & (testData[serv] == L)]
-            #Add plot line to seperated values
-            plt.plot(timeAxis, section[vlaues], label=L)
-            #Update the aggragate change in values and change in values (the temp arr)
-            a = section[vlaues].values
-            change[0] = change[0] + a[0]
-            changeTemp = np.zeros(len(a))
-            changeTemp[0] = a[0]
-            for i in range(1, len(change)):
-                change[i] = change[i] + (a[i] - a[i-1])
-                changeTemp[i] = a[i] - a[i-1]
-            changeLocArr.append(changeTemp)
-            #Get the aggragate values
-            aggra = aggra + a
-            plt.close()
-        
-        #Plot the seperated values
-        plt.title("key: " + k)
-        plt.xlabel("Time")
-        plt.ylabel("Counts")
-        plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-        plt.savefig("static/scrap" + str(graphNum) + ".png")
-        # if(showPlot == True):
-        #     plt.show()
-        # plt.close()
-        print("91")
-        #Plot the aggragate
-        plt.figure(graphNum)
-        graphNum = graphNum+1
-        print("95")
-        plt.plot(timeAxis, aggra)
-        plt.title("key: " + k + " aggregate")
-        plt.xlabel("Time")
-        plt.ylabel("Counts")
-        plt.savefig("static/scrapAgg" + str(graphNum) + ".png")
-        
-        plt.close()
-        print("104")
-        #Plot the change in values
-        plt.figure(graphNum)
-        graphNum = graphNum+1
-
-        L = testData.server.unique()
-
-        for i in range(0, len(changeLocArr)):
-            plt.plot(timeAxis, changeLocArr[i], label=L[i])
-        print("113")
-        plt.title("Change in key: " + k)
-        plt.xlabel("Time")
-        plt.ylabel("Counts")
-        plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-        plt.savefig("static/ascrapChange" + str(graphNum) + ".png")
-        
-        plt.close()
-        print("122")
-        #Plot the aggragate change in values
-        plt.figure(graphNum)
-        graphNum = graphNum+1
-
-        plt.plot(timeAxis, change)
-        plt.title("Change in key: " + k + " aggregate")
-        plt.xlabel("Time")
-        plt.ylabel("Counts")
-        plt.savefig("mysite/static/scrapAggChange" + str(graphNum) + ".png")
-        
-        plt.close()
-    plt.close()
-        
-import urllib
-
 def process_configuration(file):
     module_dir = os.path.dirname(__file__)  # get current directory
     file_path = os.path.join(module_dir, file)
@@ -648,113 +538,52 @@ def url_to_text(link):
     myfile = f.read()
     return myfile
 
-lastTime = 0
-last_seconds = 0
-#from apscheduler.scheduler import Scheduler
-from apscheduler.schedulers.background import BackgroundScheduler
-
-sched = BackgroundScheduler()
-
 def scrape():
-    print('**** Every 10 seconds *****')
-    print("read url")
+    print("Scrape")
+
     context = process_configuration("Configuration.txt")
     live = 1
     if live == 1:
-        print(context["servers"])
-        print("link 1")
-        print(link)
-
         link = context["servers"][0]
-        
         myfile = url_to_text(link)
         datastore = process_url(myfile, link)
-        
         link = context["servers"][1]
-        print("link 2")
-        print(link)
+        
         myfile = url_to_text(link)
         datastore = process_url(myfile, link)
         df = pd.DataFrame(list(Counter.objects.all().values()))
         df = pd.DataFrame(list(Counter.objects.all().values('key', 'value', 'pub_date', 'server')))
-    #fig=Figure()
         get_graphs_url(df)
         context = process_configuration("Configuration.txt")
-
     elif live == 0:
         datastore = process_data(file_path)
 
-# seconds can be replaced with minutes, hours, or days
-sched.add_job(scrape, 'interval', seconds=7)
-sched.start()
-
-
-#sched.add_interval_job(some_job, seconds = 10)
 
 def home(request):
-    
+    print("home")
     module_dir = os.path.dirname(__file__)  # get current directory
     file_path = os.path.join(module_dir, 'data.txt')
 
     context = process_configuration("Configuration.txt")
-    # print("connfig")
-    # print(configuration)
-    #datastore = process_data(file_path)
-    #datastore = process_url(file_path)
-    # print("read url")
-    # live = 1
-    # if live == 1:
-    #     #link = "http://34.74.54.189:8000/micro/stats"
-    #     link = context["servers"][0]
-    #     print("link 1 ")
-    #     print(link)
-    #     myfile = url_to_text(link)
-    #     datastore = process_url(myfile, link)
-    #     print("datastore")
-    #     print(datastore)
-    #     #link = "http://35.236.232.196:8000/micro/stats"
-    #     link = context["servers"][1]
-    #     print("link 1 ")
-    #     print(link)
-    #     myfile = url_to_text(link)
-    #     datastore = process_url(myfile, link)
-    # elif live == 0:
-    #     datastore = process_data(file_path)
-
-
-
-    
-    df = pd.DataFrame(list(Counter.objects.all().values()))
-    df = pd.DataFrame(list(Counter.objects.all().values('key', 'value', 'pub_date', 'server')))
-    #fig=Figure()
-   # fig, ax = plt.subplots(figsize=(15,7))
-    #df["server"] = 1 # for testing only
-    #get_graphs(df)
-    #get_graphs_2(df)
-    print(581)
-    print(df)
-    #get_graphs_url(df)
-    #get_graphs_url(df)
     path = "static"  # insert the path to your directory   
     img_list =os.listdir(path)
     img_list = sorted(img_list)
     if ".DS_Store" in img_list:
         img_list.remove(".DS_Store")
     context['graphs'] = img_list
-    
-
-    #plt.close()
-    #configuration = process_configuration("Configuration.txt")
-    print("connfig")
-    print(context)
-    #js_data = simplejson.dumps(my_dict)
     return render(request, 'visualizer/test.html', context)
     
 def tests(request):
     latest_question_list = Counter.objects.order_by('pub_date')[:5]
-    #context = {'latest_question_list': latest_question_list}
-    path="static"  # insert the path to your directory   
+    path="static"  
     img_list =os.listdir(path)
-    # print(img_list)
     context = {'graphs': img_list}
     return render(request, 'visualizer/test.html', context)
+
+
+def run_scraper_in_background():
+    context_file = process_configuration("Configuration.txt")
+    sched = BackgroundScheduler()
+    sched.add_job(scrape, 'interval', seconds=context_file["scrapeTime"])
+    sched.start()
+run_scraper_in_background()
