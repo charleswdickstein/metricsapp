@@ -1,0 +1,60 @@
+<style type="text/css">
+    h1{
+
+        text-align: center;
+        width: 100%;
+        font-size:10em;
+    }
+	img{
+        display: block;
+		width: 50%;
+		margin: 0 auto;
+        margin-left:auto;
+        margin-right:auto;
+	}
+</style>
+<script type="text/javascript">
+     
+
+document.addEventListener("DOMContentLoaded", function(event) { 
+  //do work
+    var getScrapeTime = parseInt(document.getElementById("scrapeTime").textContent, 10);
+    //alert(getScrapeTime);
+
+    
+  setTimeout(function(){
+    var getScrapeTime = parseInt(document.getElementById("scrapeTime").textContent, 10);
+    if (getScrapeTime == null){
+        getScrapeTime = 60000;
+    }
+    console.log("scrape time " + getScrapeTime);
+    location = 'localhost:8000'
+    location.reload();
+  },getScrapeTime)
+
+});
+</script>
+<h1>Metriculous</h1>
+
+{% if graphs %}
+<!-- {"scrapeTime": scrapeTime, "serverNum": serverNum, "servers": servers, "xlim":xlim}
+ -->
+<ul>
+    <li>Configuration Info</li>
+    <li>Servers: {{servers}}</li>
+    <li>Number of Servers: {{serverNum}}</li>
+    <li>Scrape Interval <span id="scrapeTime">{{scrapeTime}}</span></li>
+    <li>MPlot Xlim: {{xlim}}</li>
+</ul>
+    <ul>
+    {% for graph in graphs %}
+        <li><a href="../graphs/{{ question }}">{{ question }}</a></li>
+
+        <img src="/static/{{graph}}">
+
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No Graphs Are Available.</p>
+{% endif %}
+{% load static %}
