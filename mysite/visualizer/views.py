@@ -661,14 +661,18 @@ def scrape():
     context = process_configuration("Configuration.txt")
     live = 1
     if live == 1:
-        
+        print(context["servers"])
+        print("link 1")
+        print(link)
+
         link = context["servers"][0]
         
         myfile = url_to_text(link)
         datastore = process_url(myfile, link)
         
         link = context["servers"][1]
-        
+        print("link 2")
+        print(link)
         myfile = url_to_text(link)
         datastore = process_url(myfile, link)
     elif live == 0:
@@ -676,7 +680,7 @@ def scrape():
 
 # seconds can be replaced with minutes, hours, or days
 sched.add_job(scrape, 'interval', seconds=7)
-#sched.start()
+sched.start()
 
 
 #sched.add_interval_job(some_job, seconds = 10)

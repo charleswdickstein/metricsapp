@@ -3,4 +3,4 @@ Time Between Scrapes (integer in milliseconds): 30000
 Time Intervals Shown (integer number):30
 Server URLs (list bellow, one per line with no empty lines)
 http://35.237.169.40:8000/micro/stats
-http://35.237.169.40:8000/micro/stats
+http://35.230.185.22:8000/micro/stats
