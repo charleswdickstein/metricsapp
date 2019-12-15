@@ -675,6 +675,12 @@ def scrape():
         print(link)
         myfile = url_to_text(link)
         datastore = process_url(myfile, link)
+        df = pd.DataFrame(list(Counter.objects.all().values()))
+        df = pd.DataFrame(list(Counter.objects.all().values('key', 'value', 'pub_date', 'server')))
+    #fig=Figure()
+        get_graphs_url(df)
+        context = process_configuration("Configuration.txt")
+
     elif live == 0:
         datastore = process_data(file_path)
 
@@ -720,15 +726,15 @@ def home(request):
     
     df = pd.DataFrame(list(Counter.objects.all().values()))
     df = pd.DataFrame(list(Counter.objects.all().values('key', 'value', 'pub_date', 'server')))
-    fig=Figure()
-    fig, ax = plt.subplots(figsize=(15,7))
+    #fig=Figure()
+   # fig, ax = plt.subplots(figsize=(15,7))
     #df["server"] = 1 # for testing only
     #get_graphs(df)
     #get_graphs_2(df)
     print(581)
     print(df)
     #get_graphs_url(df)
-    get_graphs_url(df)
+    #get_graphs_url(df)
     path = "static"  # insert the path to your directory   
     img_list =os.listdir(path)
     img_list = sorted(img_list)
@@ -737,7 +743,7 @@ def home(request):
     context['graphs'] = img_list
     
 
-    plt.close()
+    #plt.close()
     #configuration = process_configuration("Configuration.txt")
     print("connfig")
     print(context)
