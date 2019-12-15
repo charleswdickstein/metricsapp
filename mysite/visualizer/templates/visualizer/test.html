@@ -42,8 +42,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 <ul>
     <li>Configuration Info</li>
     <li>Servers: {{servers}}</li>
-    <li>Server Num: {{serverNum}}</li>
-    <li>Scrape Time <span id="scrapeTime">{{scrapeTime}}</span></li>
+    <li>Number of Servers: {{serverNum}}</li>
+    <li>Scrape Interval <span id="scrapeTime">{{scrapeTime}}</span></li>
     <li>MPlot Xlim: {{xlim}}</li>
 </ul>
     <ul>
@@ -55,6 +55,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     {% endfor %}
     </ul>
 {% else %}
-    <p>No polls are available.</p>
+    <p>No Graphs Are Available.</p>
 {% endif %}
 {% load static %}
