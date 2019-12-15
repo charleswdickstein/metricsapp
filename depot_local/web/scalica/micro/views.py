@@ -9,7 +9,8 @@ from .counter_metrics import MetricsMap
 from .models import Following, Post, FollowingForm, PostForm, MyUserCreationForm
 
 metrics_map = MetricsMap()
-metrics_map.createSimpleCounters(['total-views', 'page-home', 'user-created', 'posts', 'page-register', 'page-index', 'page-post'])
+# metrics_map.createSimpleCounters(['total-views', 'page-home', 'user-created', 'posts', 'page-register', 'page-index', 'page-post'])
+metrics_map.createSimpleCounters(['total-views', 'page-home', 'user-created', 'page-index']) # TEST
 
 def pageHit(key):
     metrics_map.simpleIncrement(key)
@@ -34,7 +35,7 @@ def anon_home(request):
 
 def stream(request, user_id):  
   # See if to present a 'follow' button
-  pageHit('page-stream')
+  # pageHit('page-stream')
   metrics_map.simpleIncrement('total-views')
   form = None
   if request.user.is_authenticated() and request.user.id != int(user_id):
@@ -63,7 +64,7 @@ def stream(request, user_id):
   return render(request, 'micro/stream.html', context)
 
 def register(request):
-  pageHit('page-register')
+  # pageHit('page-register')
   metrics_map.simpleIncrement('total-views')
   if request.method == 'POST':
     form = MyUserCreationForm(request.POST)
@@ -106,7 +107,7 @@ def home(request):
 # Allows to post something and shows my most recent posts.
 @login_required
 def post(request):
-  pageHit('page-post')
+  # pageHit('page-post')
   metrics_map.simpleIncrement('total-views')
   if request.method == 'POST':
     form = PostForm(request.POST)
@@ -114,7 +115,7 @@ def post(request):
     new_post.user = request.user
     new_post.pub_date = timezone.now()
     new_post.save()
-    metrics_map.simpleIncrement('posts')
+    # metrics_map.simpleIncrement('posts')
     return home(request)
   else:
     form = PostForm
@@ -122,7 +123,7 @@ def post(request):
 
 @login_required
 def follow(request):
-  pageHit('page-follow')
+  # pageHit('page-follow')
   metrics_map.simpleIncrement('total-views')
   if request.method == 'POST':
     form = FollowingForm(request.POST)
