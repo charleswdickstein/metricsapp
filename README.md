@@ -1,7 +1,7 @@
 # Metriculous
 ## Counter Library, Scraper, and Data Visualization Application
 ### Github: 
-(This document may also be accessed at the README.pdf in the repository)
+(This document may also be accessed at the README.md in the repository)
 
 ## Project Use
 
