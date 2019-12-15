@@ -23,14 +23,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     
   setTimeout(function(){
-    var getScrapeTime = parseInt(document.getElementById("scrapeTime").textContent, 10);
-    if (getScrapeTime == null){
-        getScrapeTime = 60000;
-    }
-    console.log("scrape time " + getScrapeTime);
+    
+    
     location = 'localhost:8000'
     location.reload();
-  },getScrapeTime)
+  },30000)
 
 });
 </script>
