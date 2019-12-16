@@ -19,10 +19,10 @@ Access Metriculous, the Scraper/Visualizer application, at the following link:<b
 Server: http://35.223.174.169:8000/
 
 
-The Scalica instances have counters to track developer pre-defined variables per server. For demonstration purposes we have used the following variables:
-total-views : total number of page views
-page-home : number of times the home page was viewed
-user-created : number of times a new user was created
+The Scalica instances have counters to track developer pre-defined variables per server. For demonstration purposes we have used the following variables:<br/>
+total-views : total number of page views<br/>
+page-home : number of times the home page was viewed<br/>
+user-created : number of times a new user was created<br/>
 page-index : total number of times index (login) was viewed
 
 ## Project Specifications
@@ -33,22 +33,22 @@ The project consists of two distinct parts, discussed in their separate sections
 
 # Counter Library
 
-The main counter library file is called `metrics_counter.py`. Place this in the same folder as your Django app’s `views.py` file. In `views.py`, we can import the module and create a counter object:
+The main counter library file is called `metrics_counter.py`. Place this in the same folder as your Django app’s `views.py` file. In `views.py`, we can import the module and create a counter object:<br/>
 	```from .counter_metrics import MetricsMap
 	metrics_map = MetricsMap()```
-Once the object is created, we can utilize the class functions to work with the dictionary attribute of the counter object. Here is an example where we record the number of times users view the index route of our application, in `views.py`:
+Once the object is created, we can utilize the class functions to work with the dictionary attribute of the counter object. Here is an example where we record the number of times users view the index route of our application, in `views.py`:<br/>
 ```	metrics_map = MetricsMap()
 	def index(request):
 	    metrics_map.simpleIncrement('index')
 ```
 
-The class functions of counter_metrics.py can be viewed in the source code, but a high level overview is given here:
+The class functions of counter_metrics.py can be viewed in the source code, but a high level overview is given here:<br/>
 
-`createSimpleCounters(key)` takes in a list as an argument and creates keys with values initialized to 0 for the object dictionary attribute.
+`createSimpleCounters(key)` takes in a list as an argument and creates keys with values initialized to 0 for the object dictionary attribute.<br/>
 
-`simpleIncrement(metric, optional count)` increments the metric given by the first argument, and increments it by an optional value in the second argument. 
+`simpleIncrement(metric, optional count)` increments the metric given by the first argument, and increments it by an optional value in the second argument. <br/>
 
-`mapReset()` clears the object dictionary. 
+`mapReset()` clears the object dictionary. <br/>
 
 `serveMetricsMap()` returns a Django HTTP response, with the metrics dictionary as the content.
 	
@@ -59,7 +59,7 @@ The class functions of counter_metrics.py can be viewed in the source code, but 
 
 ## How to Run:
 Clone the repository
-From the main directory: “metrify” in the terminal run the following commands:
+From the main directory: “metrify” in the terminal run the following commands:<br/>
 # Install Required Libraries
 ```
 $ pip install django
