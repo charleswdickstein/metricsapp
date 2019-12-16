@@ -119,10 +119,6 @@ $ python manage.py makemigrations visualizer
 $ python manage.py runserver
  ```
 
-## TODO:
-### Counter application to create Dictionary and exposed JSON file which the scraper will read. 
-### Read Data from SQLite DB for data visualization
-
 ### Resources:
 ### https://docs.djangoproject.com/en/2.2/intro/
 
