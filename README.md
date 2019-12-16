@@ -60,6 +60,7 @@ $ pip install django
 $ pip install pandas
 $ pip install matplotlib
 $ pip install seaborn
+$ pip install apscheduler
 ```
 ## Create database and run from the directory ‘metrify/scraper_visualizer’
 From metrify:
@@ -108,16 +109,6 @@ class Counter(models.Model):
     def __str__(self):
         return self.key
 ```
-## Demo Instructions
-### Run the following commands from the mysite directory in terminal to build DB:
-```
-$ python manage.py migrate.  
-$ python manage.py makemigrations visualizer
-```
-### Run command to start server. Then go to localhost:8000
-```
-$ python manage.py runserver
- ```
 
 ### Resources:
 ### https://docs.djangoproject.com/en/2.2/intro/
