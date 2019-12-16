@@ -29,13 +29,10 @@ page-index : total number of times index (login) was viewed
 
 The project consists of two distinct parts, discussed in their separate sections. The counter portion of the project is a library that can be imported into any Django web application. The Scraper/Visualizer is a Django application to gather the counts from the various servers and produce graphs from those counts. The counter library is in Python while the scraper/visualizer application uses Python, and Javascript. The scraper requires libraries Django, SQLite, Pandas, apscheduler, seaborn and MatplotLib.
 
-
-
-# Counter Library
-
-
 # IMPORTANT NOTE: 
 In the demo application, we scrape every 30 seconds. After modifying data on Scalica, it will take 30 seconds to reflect in the scraper_visualizer web page. 
+
+# Counter Library
 
 The main counter library file is called `metrics_counter.py`. Place this in the same folder as your Django app’s `views.py` file. In `views.py`, we can import the module and create a counter object:<br/>
 	```from .counter_metrics import MetricsMap
