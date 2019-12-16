@@ -7,7 +7,7 @@
 ### The project is running on three Google Cloud instances. Two separate Google Cloud instances run Scalica, which contain implementations of the counter library. Another instance runs the scraper/visualizer application. 
 
 Access Scalica at the following links:
-Server 1: http://35.237.169.40:8000/micro/
+Server 1: http://35.237.169.40:8000/micro/ <br/>
 Server 2: http://35.230.185.22:8000/micro/
 
 For our projects, we serve the counter JSON response for the scraper to read at
