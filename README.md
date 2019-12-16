@@ -47,7 +47,7 @@ For our projects, we serve the counter JSON response at `ip/stats`. So for Scali
  Server 2: ` http://35.230.185.22:8000/micro/stats `
 	
 
-### Scraper/Visualizer Application
+## Scraper/Visualizer Application
 
 Github Repository: https://github.com/charleswdickstein/metricsapp
 
