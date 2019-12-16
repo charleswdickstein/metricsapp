@@ -26,7 +26,7 @@ This project is in two distinct parts, discussed in their separate sections. Gen
 
 
 
-## Counter Library
+# Counter Library
 
 The main counter library file is called `metrics_counter.py`. Place this in the same folder as your Django app, with file `views.py`. In `views.py`, we can import the module and create a counter object:
 	`from .counter_metrics import MetricsMap`
@@ -47,11 +47,11 @@ For our projects, we serve the counter JSON response at `ip/stats`. So for Scali
  Server 2: ` http://35.230.185.22:8000/micro/stats `
 	
 
-## Scraper/Visualizer Application
+# Scraper/Visualizer Application
 
 Github Repository: https://github.com/charleswdickstein/metricsapp
 
-#### How to Run:
+## How to Run:
 Clone the repository
 From the main directory: “metrify” in the terminal run the following commands:
 # Install Required Libraries
@@ -61,7 +61,7 @@ $ pip install pandas
 $ pip install matplotlib
 $ pip install seaborn
 ```
-#### Create database and run from the directory ‘metrify/scraper_visualizer’
+## Create database and run from the directory ‘metrify/scraper_visualizer’
 From metrify:
 Create Database. Install missing libraries as needed 
 ```
@@ -69,7 +69,7 @@ $ cd scraper_visualizer
 $ python manage.py makemigrations
 $ python manage.py migrate
 ```
-# Run the application on localhost at ‘metrify/scraper_visualizer’
+## Run the application on localhost at ‘metrify/scraper_visualizer’
 `$python manage.py runserver`
 
 Input variables are set in the Configuration.txt file. This sets the time between scrapes (how long to wait), number of time intervals to show in the most recent intervals graph (as opposed to the graphs over all time), and the links to the JSON files in the server locations you want to read from. The configuration file has some leniency for trailing spaces but do not change the order of, add or remove lines in the file. Example values are given.
