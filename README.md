@@ -24,6 +24,8 @@ Project Specifications
 
 This project is in two distinct parts, discussed in their separate sections. Generally the counters are a library that can be imported to be used in any Django web application and the Scraper/Visualizer is a Django application to gather the counts from the various servers and produce graphs. The counter library is in python while the scraper/visualizer application uses python and javascript. Both parts of the project use Django. The scraper requires SQLite, Pandas, and MatplotLib.
 
+# IMPORTANT NOTE: 
+In the demo application, we scrape every 30 seconds. After modifying data on Scalica, it will take 30 seconds to reflect in the scraper_visualizer web page. 
 
 
 ## Counter Library
@@ -60,6 +62,7 @@ $ pip install django
 $ pip install pandas
 $ pip install matplotlib
 $ pip install seaborn
+$ pip install apscheduler
 ```
 ### Create database and run from the directory ‘metrify/scraper_visualizer’
 From metrify:
