@@ -37,10 +37,10 @@ Once the object is created, we can utilize the class functions to work with the 
 	    metrics_map.simpleIncrement('index')`
 
 The class functions of counter_metrics.py can be viewed in the source code, but a high level overview is given here:
-` createSimpleCounters(key) takes in a list as an argument and creates keys, with values initialized to 0, for the object dictionary attribute. `
-` simpleIncrement(metric, optional count) increments the metric given by the first argument, and increments it by an optional value in the second argument. `
-` mapReset() clears the object dictionary. `
-` serveMetricsMap() returns a Django HTTP response, with the metrics dictionary as the content.`
+` createSimpleCounters(key)` takes in a list as an argument and creates keys, with values initialized to 0, for the object dictionary attribute.
+` simpleIncrement(metric, optional count)` increments the metric given by the first argument, and increments it by an optional value in the second argument. 
+` mapReset()` clears the object dictionary.
+` serveMetricsMap()` returns a Django HTTP response, with the metrics dictionary as the content.
 
 For our projects, we serve the counter JSON response at `ip/stats`. So for Scalica, we have:
  Server 1: ` http://35.237.169.40:8000/micro/stats `
