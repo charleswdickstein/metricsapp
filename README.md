@@ -61,7 +61,7 @@ $ pip install pandas
 $ pip install matplotlib
 $ pip install seaborn
 ```
-### Create database and run from the directory ‘metrify/scraper_visualizer’
+#### Create database and run from the directory ‘metrify/scraper_visualizer’
 From metrify:
 Create Database. Install missing libraries as needed 
 ```
