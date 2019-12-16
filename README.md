@@ -11,11 +11,11 @@ Server 1: http://35.237.169.40:8000/micro/ <br/>
 Server 2: http://35.230.185.22:8000/micro/
 
 For our projects, we serve the counter JSON response for the scraper to read at
- `<IP Address>/stats`. So for Scalica, we have:
-Server 1: http://35.237.169.40:8000/micro/stats
+ `<IP Address>/stats`. So for Scalica, we have:<br/>
+Server 1: http://35.237.169.40:8000/micro/stats<br/>
 Server 2: http://35.230.185.22:8000/micro/stats
 
-Access Metriculous, the Scraper/Visualizer application, at the following link:
+Access Metriculous, the Scraper/Visualizer application, at the following link:<br/>
 Server: http://35.223.174.169:8000/
 
 
