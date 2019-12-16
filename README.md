@@ -70,7 +70,7 @@ $ python manage.py makemigrations
 $ python manage.py migrate
 ```
 # Run the application on localhost at ‘metrify/scraper_visualizer’
-$python manage.py runserver
+`$python manage.py runserver`
 
 Input variables are set in the Configuration.txt file. This sets the time between scrapes (how long to wait), number of time intervals to show in the most recent intervals graph (as opposed to the graphs over all time), and the links to the JSON files in the server locations you want to read from. The configuration file has some leniency for trailing spaces but do not change the order of, add or remove lines in the file. Example values are given.
 
